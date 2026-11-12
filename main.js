@@ -74,14 +74,8 @@
     openPanel('book');
   });
 
-  // Links del menú: cierra el panel y luego baja suave a la sección
-  $$('#menu a[href^="#"]:not([href="#reservas"])').forEach(a => a.addEventListener('click', e => {
-    const target = a.hash && a.hash.length > 1 ? $(a.hash) : null;
-    if (!target) return;
-    e.preventDefault();
-    closePanel();
-    setTimeout(() => target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }), 450);
-  }));
+  // Demo: los links de secciones del menú lateral no hacen nada
+  $$('#menu a[href^="#"]:not([href="#reservas"])').forEach(a => a.addEventListener('click', e => e.preventDefault()));
 
   /* ---------- Revelado al hacer scroll ---------- */
   const io = new IntersectionObserver(entries => entries.forEach(en => {
@@ -231,7 +225,6 @@
   lb.addEventListener('touchend', e => { if (lx === null) return; const dx = e.changedTouches[0].clientX - lx; if (Math.abs(dx) > 40) show(lbI + (dx < 0 ? 1 : -1)); lx = null; });
 
   /* ---------- Reservas ---------- */
-  const ENGINE = 'https://direct-book.com/properties/hotelantumalaldirect';
   const iso = d => d.toISOString().slice(0, 10);
   const today = new Date(); today.setHours(12);
   const plus = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
@@ -267,17 +260,7 @@
         if (summary) { summary.parentElement.classList.add('is-error'); summary.textContent = 'La salida debe ser posterior a la llegada'; }
         return;
       }
-      const p = new URLSearchParams({
-        locale: 'es',
-        'items[0][adults]': form.elements.adults.value,
-        'items[0][children]': form.elements.children?.value || 0,
-        'items[0][infants]': 0,
-        currency: form.elements.currency?.value || 'CLP',
-        checkInDate: fin.value,
-        checkOutDate: fout.value,
-        trackPage: 'yes'
-      });
-      window.open(`${ENGINE}?${p}`, '_blank', 'noopener');
+      // Demo: sin conexión al motor de reservas
     });
   });
 
