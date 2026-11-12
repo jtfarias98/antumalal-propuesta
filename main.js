@@ -5,6 +5,20 @@
   const body = document.body;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Demo: solo funcionan Menú y Reservar (abrir y cerrar paneles) ---------- */
+  const ALLOWED = '#burger, .header__book, [data-close-panel], #veil';
+  const INTERACTIVE = 'a, button, input, select, textarea, label, summary, [role="button"], [data-full], [data-filter], [data-i], #masonry figure, .carousel, [tabindex]';
+  const block = e => {
+    const el = e.target.closest && e.target.closest(INTERACTIVE);
+    if (!el || el.closest(ALLOWED)) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  };
+  ['click', 'mousedown', 'keydown', 'submit'].forEach(t => addEventListener(t, e => {
+    if (t === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+    block(e);
+  }, true));
+
   /* ---------- Header: siempre fijo arriba; se vuelve sólido al bajar ---------- */
   const header = $('#header');
   // la barra de secciones queda justo bajo el header
